@@ -10,6 +10,7 @@ const onboardingSchema = new mongoose.Schema({
     goal: [{ type: String }],
     interestedTechStack: [{ type: String }],
     meetingId: { type: String },
+    createdAt: { type: Date, default: Date.now },
 });
 
 const Onboarding = mongoose.model("ONBOARDING", onboardingSchema);

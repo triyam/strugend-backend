@@ -59,17 +59,25 @@ router.get("/get-query", async (req, res) => {
   
 
 router.post("/onboarded", async (req, res) => {
-  const { appState } = req.body
-  if (!appState ) {
-    return res.status(422).json({ error: "Appstate Error" });
+  const appState = req.body
+  if (!req.body.hear || !req.body.name || !req.body.role || !req.body.email || !req.body.company || !req.body.website) {
+    return res.status(422).json({ error: "Appstate Error" }); 
   }
 
   try {
-    await Onboarding.create({ appState })
 
-    console.log(appState.getAllData().user);
+    const newUser = new Onboarding(appState);
+    // console.log(appState.getAllData().user);
 
-    res.status(201).json({ message: "App State Created Successfully" });
+    newUser.save()
+    .then(() => {
+      console.log('User data saved to MongoDB');
+      res.status(201).json({ message: 'Thanks for you response' });
+    })
+    .catch(error => {
+      console.error('Error saving user data:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    });
 
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error" });
