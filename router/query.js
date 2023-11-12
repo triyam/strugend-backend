@@ -58,7 +58,7 @@ router.get("/get-query", async (req, res) => {
   });
   
 
-router.get("/get-onboarded", async (req, res) => {
+router.post("/onboarded", async (req, res) => {
   const { appState } = req.body
   if (!appState ) {
     return res.status(422).json({ error: "Appstate Error" });
