@@ -3,6 +3,7 @@ const router = express.Router();
 require("../db/conn");
 
 const Query = require("../model/querySchema")
+const Onboarding = require("../model/onboardingSchema")
 
 module.exports = router;
 
@@ -56,3 +57,22 @@ router.get("/get-query", async (req, res) => {
     }
   });
   
+
+router.get("/get-onboarded", async (req, res) => {
+  const { appState } = req.body
+  if (!appState ) {
+    return res.status(422).json({ error: "Appstate Error" });
+  }
+
+  try {
+    await Onboarding.create({ appState })
+
+    console.log(appState.getAllData().user);
+
+    res.status(201).json({ message: "App State Created Successfully" });
+
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
+    console.log(error);
+  }
+})
